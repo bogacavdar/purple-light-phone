@@ -1,0 +1,14 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1400,height:1000}});
+const errs=[];p.on('pageerror',e=>errs.push(e.message+' @'+(e.stack||'').split('\n')[1]));
+const t0=Date.now();await p.goto('file:///home/claude/proje/Hammadde_prototip.html?debug');await p.waitForFunction(()=>!!window.__ham,null,{timeout:60000});console.log('load ms',Date.now()-t0);
+const ev=c=>p.evaluate(c=>window.__ham.ev(c),c);
+await ev("startNew('normal');endCine()");await p.waitForTimeout(300);await ev("wakeDone();wakeDone2()");await p.waitForTimeout(1500);
+console.log(await ev("JSON.stringify({W,H,bridge,spawn,npc:[npc.x,npc.y],witch:[witch.x,witch.y],usta:[usta.x,usta.y],field,market:[market.x,market.y],smith:[smith.x,smith.y],dock:[dock.x,dock.y],nodes:nodes.length,trees:trees.length,reachE:(()=>{let c=0;for(let i=0;i<W*H;i++)if(reach[i]&&ZONE[i])c++;return c})()})"));
+await ev("explored.fill(1);exploredCount=W*H;updateFog(0);walked=true;tapMoved=true;mapSeen=2;ytut=3;tut=11;openMenu('map')");await p.waitForTimeout(800);
+await p.screenshot({path:'shots/map1.png'});
+await ev("closeCraft();player.x=bridge.x0*T-20;player.y=bridge.cy");await p.waitForTimeout(600);await p.screenshot({path:'shots/map2.png'});
+await ev("bridge.fixed=true");await p.waitForTimeout(300);await p.keyboard.down('KeyD');await p.waitForTimeout(2500);await p.keyboard.up('KeyD');console.log('crossed',await ev("Math.round(player.x/T)+' x1 '+bridge.x1+' zone '+zoneAt(player.x,player.y)"));
+await ev("player.x=W*.86*T;player.y=H*.5*T;for(let k=0;k<200&&(!reachAt(player.x,player.y)||blocked(player.x,player.y));k++){player.x-=16}");await p.waitForTimeout(800);await p.screenshot({path:'shots/map3.png'});
+await ev("player.x=W*.62*T;player.y=H*.3*T;for(let k=0;k<200&&(!reachAt(player.x,player.y)||blocked(player.x,player.y));k++){player.y+=16}");await p.waitForTimeout(800);await p.screenshot({path:'shots/map4.png'});
+console.log(errs);await b.close()})();

@@ -1,0 +1,10 @@
+const {chromium,devices}=require('playwright');
+(async()=>{const b=await chromium.launch();const c=await b.newContext({viewport:{width:844,height:390},isMobile:true,hasTouch:true,deviceScaleFactor:2});const p=await c.newPage();
+const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('file://'+require('path').resolve(process.argv[3]||'Hammadde_prototip.html')+'?debug');await p.waitForFunction(()=>!!window.__ham,null,{timeout:60000});
+const ev=x=>p.evaluate(x=>window.__ham.ev(x),x);const S=process.argv[2];
+await ev("startNew('normal');endCine()");await p.waitForTimeout(300);await ev("wakeDone();wakeDone2()");await p.waitForTimeout(800);
+await ev("walked=true;tapMoved=true;mapSeen=2;ytut=3;tut=11;met=true;witchShown=true;qState='talk';gain('Pişmiş geyik eti',2);gain('Böğürtlen',4);['Taş balta','Taş kazma'].forEach(giveTool);renderInv();player.x=toygar.x;player.y=toygar.y+40;weather={k:'yağmur',t:99}");await p.waitForTimeout(1200);
+await p.screenshot({path:S+'/phone.png'});await ev("openEat()");await p.waitForTimeout(300);await p.screenshot({path:S+'/phone_eat.png'});await ev("closeCraft();openMenu('book');bookTab='codex';renderTools();renderCraft()");await p.waitForTimeout(300);await p.screenshot({path:S+'/phone_codex.png'});
+await ev("closeCraft();showTitle()");await p.waitForTimeout(300);await p.screenshot({path:S+'/phone_title.png'});await ev("openXfer('ex')");await p.waitForTimeout(200);await p.screenshot({path:S+'/phone_xfer.png'});
+console.log(errs);await b.close()})();

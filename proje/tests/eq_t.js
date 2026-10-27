@@ -1,0 +1,23 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1280,height:720}});
+const errs=[];p.on('pageerror',e=>errs.push(e.message+' @'+(e.stack||'').split('\n')[1]));
+await p.goto('file:///home/claude/proje/Hammadde_prototip.html?debug');await p.waitForFunction(()=>!!window.__ham);
+const ev=c=>p.evaluate(c=>window.__ham.ev(c),c);
+await ev("startNew('normal');endCine()");await p.waitForTimeout(200);await ev("wakeDone();wakeDone2()");await p.evaluate(()=>window.__ham.skip());await p.waitForTimeout(2200);
+await ev("player.x=npc.home.x+40*T;player.y=npc.home.y-30*T;if(blocked(player.x,player.y)){player.x=witch.x+60;player.y=witch.y}");
+await ev("gain('Kemik miğfer');gain('Kurt postu giysi');gain('Kürk eldiven');gain('Deri çarık');giveTool('Taş kılıç');renderInv();hotK=''");
+await p.keyboard.press('KeyI');await p.waitForTimeout(300);await p.screenshot({path:'shots/e1.png'});
+for(const n of ['Kemik miğfer','Kurt postu giysi','Kürk eldiven','Deri çarık','Taş kılıç'])await ev(`wear('${n}')`);
+await p.keyboard.press('Escape');await p.keyboard.press('KeyC');await p.waitForTimeout(300);console.log('dbg',await ev("craftOpen+' '+mode+' '+paused+' '+dlgOpen"),errs);await p.click('[data-eqs="bas"]');await p.waitForTimeout(200);await p.screenshot({path:'shots/e2.png'});
+await p.keyboard.press('Escape');
+console.log('def',await ev("armorDef()+' mul '+armorMul().toFixed(2)+' weapon '+weapon().n"));
+// temperaments
+await ev("animals.length=0;const mk=(k,dx)=>animals.push({k,x:player.x+dx,y:player.y+4,hp:ANIM[k].hp,st:'wander',t:5,dx:0,dy:0,face:-1,atk:0,flash:0,kb:null,step:0,mad:false});mk('Geyik',40);mk('Sincap',-40);mk('Keklik',0);mk('Ördek',60);mk('Yaban öküzü',-70);mk('Karaca',80)");
+await p.waitForTimeout(500);await p.screenshot({path:'shots/e3.png'});
+const h0=await ev("Math.round(hp)");await p.waitForTimeout(2000);console.log('hp unchanged by neutrals',h0,await ev("Math.round(hp)"));
+await ev("const g=animals.find(a=>a.k==='Geyik');player.face={x:1,y:0};g.x=player.x+16;g.y=player.y;attack()");await p.waitForTimeout(2500);
+console.log('after provoking deer hp',await ev("Math.round(hp)+' deer mad '+(animals.find(a=>a.k==='Geyik')||{}).mad"));
+await ev("const g=animals.find(a=>a.k==='Geyik');if(g){g.hp=1;g.x=player.x+14;g.y=player.y;player.face={x:1,y:0};atkCd=0;attack()}");await p.waitForTimeout(300);
+console.log('inv',await ev("['Geyik eti','Geyik derisi','Geyik boynuzu','Sinir','Kemik','Hayvan yağı'].map(n=>n+':'+(inv[n]||0)).join(' ')"));
+await p.screenshot({path:'shots/e4.png'});
+console.log(errs);await b.close()})();

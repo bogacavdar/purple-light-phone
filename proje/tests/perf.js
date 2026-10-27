@@ -1,0 +1,11 @@
+const {chromium}=require('playwright');
+(async()=>{const b=await chromium.launch();const p=await b.newPage({viewport:{width:1280,height:720}});
+const errs=[];p.on('pageerror',e=>errs.push(e.message));
+const t0=Date.now();await p.goto('file:///home/claude/proje/Hammadde_prototip.html?debug');await p.waitForFunction(()=>!!window.__ham,null,{timeout:60000});console.log('load',Date.now()-t0);
+const ev=c=>p.evaluate(c=>window.__ham.ev(c),c);
+await ev("startNew('normal');endCine()");await p.waitForTimeout(300);await ev("wakeDone();wakeDone2()");await p.waitForTimeout(1500);
+const fps=await p.evaluate(()=>new Promise(r=>{let n=0;const t=performance.now();function f(){n++;if(performance.now()-t<3000)requestAnimationFrame(f);else r(n/3)}requestAnimationFrame(f)}));console.log('fps',fps.toFixed(1));
+await ev("player.x=W*.65*T;player.y=H*.5*T;for(let k=0;k<200&&(!reachAt(player.x,player.y)||blocked(player.x,player.y));k++)player.y+=16");
+const fps2=await p.evaluate(()=>new Promise(r=>{let n=0;const t=performance.now();function f(){n++;if(performance.now()-t<3000)requestAnimationFrame(f);else r(n/3)}requestAnimationFrame(f)}));console.log('fps swamp',fps2.toFixed(1));
+const sz=await ev("JSON.stringify(snapshot()).length");console.log('save size',sz);
+console.log(errs);await b.close()})();
